@@ -8,6 +8,7 @@ import { controllers, passport as passportConfig } from '../db';
 const usersController = controllers && controllers.users;
 const dishesController = controllers && controllers.dishes;
 const ordersController = controllers && controllers.orders;
+const restaurantStatsController = controllers && controllers.restaurantStats;
 
 export default (app) => {
   // user routes
@@ -61,5 +62,13 @@ export default (app) => {
     // app.delete('/api/order/:id', ordersController.remove);
   } else {
     console.warn(unsupportedMessage('Order routes'));
+  }
+
+  if (restaurantStatsController) {
+    app.get('/api/stats/restaurant/:id/least-sold-dish', restaurantStatsController.leastSoldDish);
+    app.get('/api/stats/restaurant/:id/most-sold-dish', restaurantStatsController.mostSoldDish);
+    app.get('/api/stats/restaurant/:id/earnings', restaurantStatsController.earnings);
+  } else {
+    console.warn(unsupportedMessage('restaurantStats routes'));
   }
 };

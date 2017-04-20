@@ -1,9 +1,8 @@
 import mongoose from 'mongoose';
 
-const OrderSchema = new mongoose.Schema({
+export const OrderSchema = new mongoose.Schema({
   date: { type: Date, default: new Date() },
   total: { type: Number, min: 0 },
-  dishes: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Dish'}],
   client: { type: mongoose.Schema.Types.ObjectId, ref: 'User' }
 });
 
