@@ -1,11 +1,12 @@
 import React, { Component } from 'react';
+import ReactDOM from 'react-dom';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import classNames from 'classnames/bind';
 import CurrencyInput from 'react-currency-input';
 import styles from '../css/components/home';
 import axios from 'axios';
-import { deleteDish } from '../actions/dishes';
+import { deleteDish, createDish } from '../actions/dishes';
 const cx = classNames.bind(styles);
 
 class RestaurantHome extends Component {
@@ -14,6 +15,7 @@ class RestaurantHome extends Component {
     super(props);
     this.state = {
       updateInputs: false,
+      price: '1'
     }
   }
 
@@ -33,12 +35,25 @@ class RestaurantHome extends Component {
     }
   }
 
+  onPriceChange = newValue => {
+    this.setState({
+      price: newValue
+    })
+  }
+
   updateDish = (dishId, i) => {
     const name = this.dishRefs[i].name.value;
     const price = Number(this.dishRefs[i].price.getMaskedValue().replace(/(,|\$)/ig, ''));
     axios.put(`api/dish/${dishId}`, {name, price})
       .then(console.log)
       .catch(console.log)
+  }
+
+  handleAddDish = (e) => {
+    e.preventDefault();
+    const name = ReactDOM.findDOMNode(this.refs.dishName).value;
+    const price = Number(this.state.price.replace(/(,|\$)/ig, ''));
+    this.props.createDish({ name, price });
   }
 
   render() {
@@ -62,14 +77,14 @@ class RestaurantHome extends Component {
         <div style={{display: 'flex'}}>
           <div className={cx('new-dish')}>
             <h3>Add a new dish</h3>
-            <form>
+            <form onSubmit={this.handleAddDish}>
               <div className={cx('flex-col')}>
                 <label for="name" className={cx('input-label')}>Name</label>
-                <input label="name" type="text" placeholder="Spaghetti" className={cx('input')} />
+                <input label="name" ref="dishName" type="text" placeholder="Spaghetti" className={cx('input')} />
               </div>
               <div style={{marginTop: '10px'}} className={cx('flex-col')}>
                 <label className={cx('input-label')}>Price</label>
-                <CurrencyInput prefix="$" className={cx('input')} />
+                <CurrencyInput prefix="$" className={cx('input')} onChange={this.onPriceChange} value={this.state.price}/>
               </div>
               <input
                 className={cx('button')}
@@ -145,4 +160,4 @@ function mapStateToProps(state) {
 
 // Read more about where to place `connect` here:
 // https://github.com/rackt/react-redux/issues/75#issuecomment-135436563
-export default connect(mapStateToProps, { deleteDish })(RestaurantHome);
+export default connect(mapStateToProps, { deleteDish, createDish })(RestaurantHome);

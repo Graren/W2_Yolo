@@ -6,11 +6,8 @@ const dish = (
   action
 ) => {
   switch (action.type) {
-    case types.CREATE_DISH_REQUEST:
-      return {
-        name: action.name,
-        price: action.price
-      };
+    case types.CREATE_DISH_SUCCESS:
+      return action.payload;
     default:
       return state;
   }
@@ -24,7 +21,7 @@ const dishes = (
     case types.REQUEST_SUCCESS:
       if (action.data) return action.data;
       return state;
-    case types.CREATE_DISH_REQUEST:
+    case types.CREATE_DISH_SUCCESS:
       return [...state, dish(undefined, action)];
     case types.CREATE_DISH_FAILURE:
       return state.filter(t => t.id !== action.id);

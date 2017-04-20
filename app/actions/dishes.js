@@ -18,82 +18,45 @@ export function destroy(id) {
  * @param data
  * @return a simple JS object
  */
-export function createTopicRequest(data) {
+export function createDishRequest(data) {
   return {
-    type: types.CREATE_TOPIC_REQUEST,
+    type: types.CREATE_DISH_REQUEST,
+    name: data.name,
+    price: data.price
+  };
+}
+
+export function createDishSuccess(data) {
+  return {
+    type: types.CREATE_DISH_SUCCESS,
+    payload: data
+  };
+}
+
+export function createDishFailure(data) {
+  return {
+    type: types.CREATE_DISH_FAILURE,
     id: data.id,
-    count: data.count,
-    text: data.text
+    error: data.error
   };
 }
 
-export function createTopicSuccess() {
-  return {
-    type: types.CREATE_TOPIC_SUCCESS
+
+export function createDish(data) {
+  return (dispatch) => {
+    dispatch(createDishRequest(data));
+    return makeDishRequest('post', null, data)
+      .then((res) => {
+        if (res.status === 200) {
+          return dispatch(createDishSuccess(res.data));
+        }
+      })
+      .catch(() => {
+        return dispatch(createDishFailure({ id, error: 'Oops! Something went wrong and we couldn\'t create your topic'}));
+      });
   };
 }
 
-// export function createTopicFailure(data) {
-//   return {
-//     type: types.CREATE_TOPIC_FAILURE,
-//     id: data.id,
-//     error: data.error
-//   };
-// }
-//
-// export function createTopicDuplicate() {
-//   return {
-//     type: types.CREATE_TOPIC_DUPLICATE
-//   };
-// }
-//
-// // This action creator returns a function,
-// // which will get executed by Redux-Thunk middleware
-// // This function does not need to be pure, and thus allowed
-// // to have side effects, including executing asynchronous API calls.
-// export function createTopic(text) {
-//   return (dispatch, getState) => {
-//     // If the text box is empty
-//     if (text.trim().length <= 0) return;
-//
-//     const id = md5.hash(text);
-//     // Redux thunk's middleware receives the store methods `dispatch`
-//     // and `getState` as parameters
-//     const { topic } = getState();
-//     const data = {
-//       count: 1,
-//       id,
-//       text
-//     };
-//
-//     // Conditional dispatch
-//     // If the topic already exists, make sure we emit a dispatch event
-//     if (topic.topics.filter(topicItem => topicItem.id === id).length > 0) {
-//       // Currently there is no reducer that changes state for this
-//       // For production you would ideally have a message reducer that
-//       // notifies the user of a duplicate topic
-//       return dispatch(createTopicDuplicate());
-//     }
-//
-//     // First dispatch an optimistic update
-//     dispatch(createTopicRequest(data));
-//
-//     return makeTopicRequest('post', id, data)
-//       .then((res) => {
-//         if (res.status === 200) {
-//           // We can actually dispatch a CREATE_TOPIC_SUCCESS
-//           // on success, but I've opted to leave that out
-//           // since we already did an optimistic update
-//           // We could return res.json();
-//           return dispatch(createTopicSuccess());
-//         }
-//       })
-//       .catch(() => {
-//         return dispatch(createTopicFailure({ id, error: 'Oops! Something went wrong and we couldn\'t create your topic'}));
-//       });
-//   };
-// }
-//
 export function deleteDish(id) {
   return (dispatch) => {
     console.log(dispatch)
