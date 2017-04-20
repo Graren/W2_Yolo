@@ -1,25 +1,24 @@
 import _ from 'lodash';
-import Topic from '../models/topics';
+import Dish from '../models/dishes';
 
 /**
  * List
  */
 export function all(req, res) {
-  Topic.find({}).exec((err, topics) => {
+  Dish.find({}).exec((err, topics) => {
     if (err) {
       console.log('Error in first query');
       return res.status(500).send('Something went wrong getting the data');
     }
-
     return res.json(topics);
   });
 }
 
 /**
- * Add a Topic
+ * Add a Dish
+ export function add(req, res) {
  */
-export function add(req, res) {
-  Topic.create(req.body, (err) => {
+  Dish.create(req.body, (err) => {
     if (err) {
       console.log(err);
       return res.status(400).send(err);
@@ -31,6 +30,7 @@ export function add(req, res) {
 
 /**
  * Update a topic
+*   Cant say I understand this
  */
 export function update(req, res) {
   const query = { id: req.params.id };
@@ -40,7 +40,7 @@ export function update(req, res) {
   const data = _.omit(req.body, omitKeys);
 
   if (isFull) {
-    Topic.findOneAndUpdate(query, data, (err) => {
+    Dish.findOneAndUpdate(query, data, (err) => {
       if (err) {
         console.log('Error on save!');
         return res.status(500).send('We failed to save for some reason');
@@ -49,7 +49,7 @@ export function update(req, res) {
       return res.status(200).send('Updated successfully');
     });
   } else {
-    Topic.findOneAndUpdate(query, { $inc: { count: isIncrement ? 1 : -1 } }, (err) => {
+    Dish.findOneAndUpdate(query, { $inc: { count: isIncrement ? 1 : -1 } }, (err) => {
       if (err) {
         console.log('Error on save!');
         return res.status(500).send('We failed to save for some reason');
@@ -65,7 +65,7 @@ export function update(req, res) {
  */
 export function remove(req, res) {
   const query = { id: req.params.id };
-  Topic.findOneAndRemove(query, (err) => {
+  Dish.findOneAndRemove(query, (err) => {
     if (err) {
       console.log('Error on delete');
       return res.status(500).send('We failed to delete for some reason');

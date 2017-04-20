@@ -38,7 +38,9 @@ export function logout(req, res) {
 export function signUp(req, res, next) {
   const user = new User({
     email: req.body.email,
-    password: req.body.password
+    password: req.body.password,
+    name : req.body.name,
+    userType: req.body.userType
   });
 
   User.findOne({ email: req.body.email }, (findErr, existingUser) => {

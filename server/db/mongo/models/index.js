@@ -1,4 +1,4 @@
 export default function loadModels() {
-  require('./topics');
+  require('./dishes');
   require('./user');
 }
