@@ -15,9 +15,8 @@ export function all(req, res) {
 }
 
 /**
- * Add a Dish
+ * Add a Dish*/
  export function add(req, res) {
- */
   Dish.create(req.body, (err) => {
     if (err) {
       console.log(err);

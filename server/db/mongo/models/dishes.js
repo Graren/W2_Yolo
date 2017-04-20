@@ -8,6 +8,7 @@ const DishSchema = new mongoose.Schema({
   id: String,
   name: String,
   price: { type: Number, min: 0 },
+  restaurant: { type: mongoose.Schema.Types.ObjectId, ref: 'User' }
 });
 
 // Compiles the schema into a model, opening (or creating, if
