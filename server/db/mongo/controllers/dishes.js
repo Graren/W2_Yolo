@@ -22,6 +22,7 @@ export function all(req, res) {
 /**
  * Add a Dish*/
  export function add(req, res) {
+  console.log(req.user);
   const data = Object.assign({}, req.body, { restaurant: req.user._id});
   Dish.create(data, (err, dish) => {
     if (err) {
