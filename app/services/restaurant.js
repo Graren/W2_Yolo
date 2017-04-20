@@ -1,7 +1,7 @@
 import axios from 'axios';
 
 const service = {
-  getDishes: () => axios.get('/api/dish')
+  getDishes: (restaurant) => axios.get('/api/dish', { params: { restaurant }})
 };
 
 export default service;

@@ -1,6 +1,5 @@
 import React from 'react';
 import { Route, IndexRoute } from 'react-router';
-import { fetchVoteData } from './fetch-data';
 import { App, Home, Dashboard, LoginOrRegister } from './pages';
 
 /*
@@ -31,7 +30,7 @@ export default (store) => {
   };
   return (
     <Route path="/" component={App}>
-      <IndexRoute component={Home} fetchData={fetchVoteData} />
+      <IndexRoute component={Home} />
       <Route path="login" component={LoginOrRegister} onEnter={redirectAuth} />
       <Route path="dashboard" component={Dashboard} onEnter={requireAuth} />
     </Route>

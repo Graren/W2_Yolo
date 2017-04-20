@@ -14,6 +14,13 @@ export function destroy(id) {
   return { type: types.DESTROY_DISH, id };
 }
 
+export function getDishesRequest(restaurant) {
+  return {
+    type: types.GET_DISHES_REQUEST,
+    restaurant,
+  };
+}
+
 /*
  * @param data
  * @return a simple JS object
@@ -33,6 +40,20 @@ export function createDishSuccess(data) {
   };
 }
 
+export function getDishesSuccess(data) {
+  return {
+    type: types.GET_DISHES_SUCCESS,
+    data,
+  };
+}
+
+export function getDishesFailure(error) {
+  return {
+    type: types.GET_DISHES_FAILURE,
+    error,
+  };
+}
+
 export function createDishFailure(data) {
   return {
     type: types.CREATE_DISH_FAILURE,
@@ -40,7 +61,6 @@ export function createDishFailure(data) {
     error: data.error
   };
 }
-
 
 export function createDish(data) {
   return (dispatch) => {
@@ -53,6 +73,21 @@ export function createDish(data) {
       })
       .catch(() => {
         return dispatch(createDishFailure({ id, error: 'Oops! Something went wrong and we couldn\'t create your topic'}));
+      });
+  };
+}
+
+export function getDishes(restaurant) {
+  return (dispatch) => {
+    dispatch(getDishesRequest(restaurant));
+    return makeDishRequest('get', null, { params: { restaurant } })
+      .then((res) => {
+        if (res.status === 200) {
+          return dispatch(getDishesSuccess(res.data));
+        }
+      })
+      .catch(() => {
+        return dispatch(getDishesFailure({ id, error: 'Oops! Something went wrong and we couldn\'t get dishes'}));
       });
   };
 }

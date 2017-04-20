@@ -6,7 +6,7 @@ import classNames from 'classnames/bind';
 import CurrencyInput from 'react-currency-input';
 import styles from '../css/components/home';
 import axios from 'axios';
-import { deleteDish, createDish } from '../actions/dishes';
+import { deleteDish, createDish, getDishes } from '../actions/dishes';
 const cx = classNames.bind(styles);
 
 class RestaurantHome extends Component {
@@ -17,6 +17,10 @@ class RestaurantHome extends Component {
       updateInputs: false,
       price: '1'
     }
+  }
+
+  componentDidMount() {
+    this.props.getDishes(this.props.user._id);
   }
 
   componentDidUpdate() {
@@ -59,7 +63,6 @@ class RestaurantHome extends Component {
   render() {
     const { user, dishes } = this.props;
     this.dishRefs = Array(dishes.length);
-    console.log(this.dishRefs)
     return (
       <div className={cx()}>
         <div style={{display: 'flex'}}>
@@ -160,4 +163,4 @@ function mapStateToProps(state) {
 
 // Read more about where to place `connect` here:
 // https://github.com/rackt/react-redux/issues/75#issuecomment-135436563
-export default connect(mapStateToProps, { deleteDish, createDish })(RestaurantHome);
+export default connect(mapStateToProps, { deleteDish, createDish, getDishes })(RestaurantHome);
