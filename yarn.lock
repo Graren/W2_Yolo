@@ -5669,6 +5669,10 @@ react-helmet@^5.0.2:
     object-assign "^4.1.1"
     react-side-effect "^1.1.0"
 
+react-number-format@^1.1.2:
+  version "1.1.2"
+  resolved "https://registry.yarnpkg.com/react-number-format/-/react-number-format-1.1.2.tgz#74d8478fa5cdeed55637f392597a0911157e2568"
+
 react-proxy@^1.1.7:
   version "1.1.8"
   resolved "https://registry.yarnpkg.com/react-proxy/-/react-proxy-1.1.8.tgz#9dbfd9d927528c3aa9f444e4558c37830ab8c26a"

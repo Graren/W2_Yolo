@@ -6,8 +6,8 @@ import moment from 'moment';
 
 function getSoldItem(restaurantId, minDate, maxDate, type = 'most') {
   return new Promise((resolve, reject) => {
-    if(!minDate) minDate = moment().startOf('day').toDate();
-    if(!maxDate) maxDate = moment().endOf('day').toDate();
+    minDate = minDate ? new Date(minDate) : moment().startOf('day').toDate();
+    maxDate = maxDate ? new Date(maxDate) : moment().endOf('day').toDate();
     OrderItem.aggregate([
       {
         $match: {
@@ -38,13 +38,70 @@ function getSoldItem(restaurantId, minDate, maxDate, type = 'most') {
         reject(err);
       }
       const result = results[0];
-      Dish.findById(result._id, (err, dish) => {
-        if (err) {
-          reject(err);
+      if (!result) {
+        reject(result);
+      } else {
+        Dish.findById(result._id, (err, dish) => {
+          if (err) {
+            reject(err);
+          }
+          const resultPopulated = Object.assign({}, result, dish._doc);
+          resolve(resultPopulated);
+        });
+      }
+    });
+  })
+}
+
+function getEarnings(restaurantId, date) {
+  return new Promise((resolve, reject) => {
+    const minDate = date ? moment(date).startOf('day').toDate(): moment().startOf('day').toDate();
+    const maxDate = date ? moment(date).endOf('day').toDate() : moment().endOf('day').toDate();
+    OrderItem.aggregate([
+      {
+        $match: {
+          restaurant: mongoose.Types.ObjectId(restaurantId),
+          date: {
+            $gte: minDate,
+            $lte: maxDate
+          }
         }
-        const resultPopulated = Object.assign({}, result, dish._doc);
-        resolve(resultPopulated);
-      })
+      },
+      {
+        $group: {
+          _id: { dish: '$dish', restaurant: '$restaurant', price: '$price' },
+          quantity: {$sum: '$quantity'},
+        }
+      },
+      {
+        $project: {
+          _id: '$_id',
+          subtotal: { $multiply: [ "$_id.price", "$quantity" ] },
+        }
+      },
+      {
+        $group: {
+          _id: '$_id.restaurant',
+          total: { $sum: '$subtotal'},
+        }
+      }
+    ], function (err, results) {
+      if (err) {
+        reject(err);
+      } else {
+        const result = results[0];
+        if (!result) {
+          resolve({
+            date,
+            total: 0
+          });
+        } else {
+          resolve({
+            date,
+            total: result.total
+          });
+        }
+      }
     });
   })
 }
@@ -69,8 +126,24 @@ export function mostSoldDish(req, res) {
     })
 }
 
+export function earnings(req, res) {
+  const minDate = moment(req.query.minDate).startOf('day');
+  const maxDate = moment(req.query.maxDate).endOf('day');
+  const dates = [];
+  for (let m = minDate; m.isBefore(maxDate); m.add(1, 'days')) {
+    dates.push(m.toDate());
+  }
+  Promise.all(dates.map(date => getEarnings(req.params.id, date)))
+    .then(data => {
+      return res.status(200).send(data);
+    })
+    .catch(err => {
+      return res.status(400).send(err);
+    })
+}
+
 export default {
   leastSoldDish,
   mostSoldDish,
-  earnings: mostSoldDish
+  earnings
 };

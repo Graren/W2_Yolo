@@ -1,0 +1,21 @@
+.container {
+  padding: 0 60px;
+}
+
+.restaurant-img {
+  margin: 10px 15px 0 0;
+}
+
+.stats-container {
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+
+.stat-section {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  margin-bottom: 20px;
+}

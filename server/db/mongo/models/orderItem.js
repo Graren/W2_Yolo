@@ -4,6 +4,7 @@ export const OrderItemSchema = new mongoose.Schema({
   order: { type: mongoose.Schema.Types.ObjectId, ref: 'Order' },
   date: { type: Date, default: new Date() },
   quantity: { type: Number, min: 1 },
+  price: Number,
   dish: { type: mongoose.Schema.Types.ObjectId, ref: 'Dish'},
   restaurant: { type: mongoose.Schema.Types.ObjectId, ref: 'User' }
 });

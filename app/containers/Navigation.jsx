@@ -15,6 +15,7 @@ const Navigation = ({ user, logOut }) => {
           to="/"
           className={cx('item', 'logo')}
           activeClassName={cx('active')}>Yolo</Link>
+        <Link className={cx('item')} to="/dashboard">Dashboard</Link>
           { user.authenticated ? (
             <Link
               onClick={logOut}
@@ -22,7 +23,6 @@ const Navigation = ({ user, logOut }) => {
           ) : (
             <Link className={cx('item')} to="/login">Log in</Link>
           )}
-        <Link className={cx('item')} to="/dashboard">Dashboard</Link>
       </nav>
     );
 };
