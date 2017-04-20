@@ -96,9 +96,9 @@ export function createTopicSuccess() {
 //
 export function deleteDish(id) {
   return (dispatch) => {
+    console.log(dispatch)
     return makeDishRequest('delete', id)
       .then(() => dispatch(destroy(id)))
-      .catch(() => dispatch(createTopicFailure({id,
-        error: 'Oops! Something went wrong and we couldn\'t add your vote'})));
+      .catch(console.log);
   };
 }

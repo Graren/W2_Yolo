@@ -5,10 +5,33 @@ import classNames from 'classnames/bind';
 import CurrencyInput from 'react-currency-input';
 import styles from '../css/components/home';
 import axios from 'axios';
-
+import { deleteDish } from '../actions/dishes';
 const cx = classNames.bind(styles);
 
 class RestaurantHome extends Component {
+
+  constructor(props) {
+    super(props);
+    this.state = {
+      updateInputs: false,
+    }
+  }
+
+  componentDidUpdate() {
+    if (this.state.updateInputs) {
+      this.setState({
+        updateInputs: false,
+      });
+    }
+  }
+
+  componentWillReceiveProps(nextProps) {
+    if (this.props.dishes && nextProps.dishes && nextProps.dishes.length !== this.props.dishes.length) {
+      this.setState({
+        updateInputs: true,
+      });
+    }
+  }
 
   updateDish = (dishId, i) => {
     const name = this.dishRefs[i].name.value;
@@ -75,7 +98,7 @@ class RestaurantHome extends Component {
                       className={cx('input')}
                       ref={ref => {
                         if(ref) {
-                          ref.value = ref.value ? ref.value : dish.name;
+                          ref.value = ref.value && !this.state.updateInputs ? ref.value : dish.name;
                           this.dishRefs[key] = Object.assign({}, this.dishRefs[key], {name: ref});
                         }
                       }}
@@ -97,7 +120,7 @@ class RestaurantHome extends Component {
                   </div>
                   <div style={{display: 'flex'}}>
                     <button className={cx('button')} onClick={() => this.updateDish(dish._id, key)}>Update</button>
-                    <button className={cx('remove-button')}>Remove</button>
+                    <button className={cx('remove-button')} onClick={(() => this.props.deleteDish(dish._id))}>Remove</button>
                   </div>
                 </div>
               </div>
@@ -122,4 +145,4 @@ function mapStateToProps(state) {
 
 // Read more about where to place `connect` here:
 // https://github.com/rackt/react-redux/issues/75#issuecomment-135436563
-export default connect(mapStateToProps)(RestaurantHome);
+export default connect(mapStateToProps, { deleteDish })(RestaurantHome);

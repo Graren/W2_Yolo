@@ -29,7 +29,7 @@ const dishes = (
     case types.CREATE_DISH_FAILURE:
       return state.filter(t => t.id !== action.id);
     case types.DESTROY_DISH:
-      return state.filter(t => t.id !== action.id);
+      return state.filter(t => t._id !== action.id);
     default:
       return state;
   }
