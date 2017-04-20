@@ -28,4 +28,16 @@
       border-color: var(--colorDarkerSalem);
     }
   }
+
+  --redButton {
+    @apply --button;
+    color: var(--colorWhite);
+    background: var(--colorPunch);
+    border-color: var(--colorPunch);
+
+    &:hover {
+      background: var(--colorCrimson);
+      border-color: var(--colorCrimson);
+    }
+  }
 }

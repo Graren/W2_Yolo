@@ -12,12 +12,12 @@ class Home extends Component {
   }
 
   pageTitle = () => {
-    return 'Vote | reactGo';
+    return 'Yolo';
   };
 
   pageMeta = () => {
     return [
-      { name: 'description', content: 'A reactGo example of a voting page' }
+      { name: 'description', content: 'A Yolo' }
     ];
   };
 

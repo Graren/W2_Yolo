@@ -14,10 +14,11 @@
   margin: 10px 15px 0 0;
 }
 
-.dish {
+.new-dish {
   background-color: #F0F0F0;
   padding: 15px;
   width: 400px;
+  height: 260px;
 }
 
 .input-label {
@@ -38,4 +39,24 @@
   @apply --greenButton;
   margin-top: 20px;
   padding: 5px;
+}
+
+.remove-button {
+  @apply --redButton;
+  margin-top: 20px;
+  padding: 5px;
+}
+
+.dishes-list {
+  margin-left: 20px;
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.dish {
+  display: flex;
+  margin-bottom: 40px;
+  border: 2px solid grey;
+  padding: 30px;
+  margin-left: 20px;
 }

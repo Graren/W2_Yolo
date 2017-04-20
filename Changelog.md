@@ -119,7 +119,7 @@ Previously in order to fetch data asynchronously on route change, we would speci
 ```js
 export function fetchTopics() {
   return {
-    type: types.GET_TOPICS,
+    type: types.GET_DISHES,
     promise: makeTopicRequest('get')
   };
 }
