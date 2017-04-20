@@ -1,2 +1,1 @@
-export { default as voteService } from './topics';
-
+export { default as restaurantService } from './restaurant';
