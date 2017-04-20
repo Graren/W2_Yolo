@@ -40,12 +40,10 @@ export function signUp(req, res, next) {
     name : req.body.name,
     userType: req.body.userType
   });
-
   User.findOne({ email: req.body.email }, (findErr, existingUser) => {
     if (existingUser) {
       return res.status(409).json({ message: 'Account with this email address already exists!' });
     }
-
     return user.save((saveErr) => {
       if (saveErr) return next(saveErr);
       return req.logIn(user, (loginErr) => {

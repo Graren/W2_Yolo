@@ -7,6 +7,7 @@ import Dish from '../models/dishes';
 export function all(req, res) {
   const query = req.params.id ? { _id: req.params.id } : {};
   if (req.query.restaurant) query.restaurant = req.query.restaurant
+  query.deleted = false;
   Dish.find(query)
   .populate('restaurant', 'name _id')
   .exec((err, dishes) => {
@@ -53,7 +54,8 @@ export function update(req, res) {
  */
 export function remove(req, res) {
   const query = { _id: req.params.id };
-  Dish.findOneAndRemove(query, (err) => {
+  const data = { deleted : true};
+  Dish.findOneAndUpdate(query, data, (err) => {
     if (err) {
       console.log('Error on delete');
       return res.status(500).send('We failed to delete for some reason');
