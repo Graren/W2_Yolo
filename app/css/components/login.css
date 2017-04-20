@@ -12,6 +12,11 @@
   border-radius: var(--globalRadius);
 }
 
+.type-input {
+  text-align: center;
+  margin: 10px 0;
+}
+
 .waiting {
   .loading {
     display: block;

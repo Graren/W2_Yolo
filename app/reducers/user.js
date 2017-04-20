@@ -33,6 +33,21 @@ const message = (
   }
 };
 
+const user = (
+  state = null,
+  action
+) => {
+  switch (action.type) {
+    case types.LOGIN_SUCCESS_USER:
+    case types.SIGNUP_SUCCESS_USER:
+      return action.user;
+    case types.LOGOUT_SUCCESS_USER:
+      return null;
+    default:
+      return state;
+  }
+};
+
 const isWaiting = (
   state = false,
   action
@@ -76,7 +91,8 @@ const userReducer = combineReducers({
   isLogin,
   isWaiting,
   authenticated,
-  message
+  message,
+  user,
 });
 
 export default userReducer;

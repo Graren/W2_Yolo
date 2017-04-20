@@ -2,7 +2,6 @@ import mongoose from 'mongoose';
 import Dish from './dishes'
 
 const OrderSchema = new mongoose.Schema({
-  id: String,
   date: { type: Date },
   // price: { type: Number, min: 0 }
   dishes: { type: mongoose.Schema.Types.ObjectId, ref: 'Dish' }

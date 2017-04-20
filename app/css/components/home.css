@@ -1,0 +1,41 @@
+@import '../common/button';
+
+.container {
+  padding: 0 60px;
+}
+
+.cover-screen {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.restaurant-img {
+  margin: 10px 15px 0 0;
+}
+
+.dish {
+  background-color: #F0F0F0;
+  padding: 15px;
+  width: 400px;
+}
+
+.input-label {
+  font-size: 14px;
+}
+
+.input {
+  font-size: 16px;
+  padding: 5px;
+}
+
+.flex-col {
+  display: flex;
+  flex-direction: column;
+}
+
+.button {
+  @apply --greenButton;
+  margin-top: 20px;
+  padding: 5px;
+}

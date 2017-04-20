@@ -5,25 +5,28 @@ import Dish from '../models/dishes';
  * List
  */
 export function all(req, res) {
-  Dish.find({}).exec((err, topics) => {
+  const query = req.params.id ? { _id: req.params.id } : {};
+  if (req.query.restaurant) query.restaurant = req.query.restaurant
+  Dish.find(query)
+  .populate('restaurant', 'name _id')
+  .exec((err, dishes) => {
     if (err) {
       console.log('Error in first query');
       return res.status(500).send('Something went wrong getting the data');
     }
-    return res.json(topics);
+    return res.json(dishes);
   });
 }
 
 /**
  * Add a Dish*/
  export function add(req, res) {
-  Dish.create(req.body, (err) => {
+  const data = Object.assign({}, req.body, { restaurant: req.user._id});
+  Dish.create(data, (err, dish) => {
     if (err) {
-      console.log(err);
       return res.status(400).send(err);
     }
-
-    return res.status(200).send('OK');
+    return res.status(200).send(dish);
   });
 }
 
@@ -32,38 +35,24 @@ export function all(req, res) {
 *   Cant say I understand this
  */
 export function update(req, res) {
-  const query = { id: req.params.id };
-  const isIncrement = req.body.isIncrement;
-  const isFull = req.body.isFull;
-  const omitKeys = ['id', '_id', '_v', 'isIncrement', 'isFull'];
+  const query = { _id: req.params.id };
+  const omitKeys = ['_id', '_v', 'restaurant'];
   const data = _.omit(req.body, omitKeys);
+  Dish.findOneAndUpdate(query, data, (err) => {
+    if (err) {
+      console.log('Error on save!');
+      return res.status(500).send('We failed to save for some reason');
+    }
 
-  if (isFull) {
-    Dish.findOneAndUpdate(query, data, (err) => {
-      if (err) {
-        console.log('Error on save!');
-        return res.status(500).send('We failed to save for some reason');
-      }
-
-      return res.status(200).send('Updated successfully');
-    });
-  } else {
-    Dish.findOneAndUpdate(query, { $inc: { count: isIncrement ? 1 : -1 } }, (err) => {
-      if (err) {
-        console.log('Error on save!');
-        return res.status(500).send('We failed to save for some reason');
-      }
-
-      return res.status(200).send('Updated successfully');
-    });
-  }
+    return res.status(200).send('Updated successfully');
+  });
 }
 
 /**
  * Remove a topic
  */
 export function remove(req, res) {
-  const query = { id: req.params.id };
+  const query = { _id: req.params.id };
   Dish.findOneAndRemove(query, (err) => {
     if (err) {
       console.log('Error on delete');

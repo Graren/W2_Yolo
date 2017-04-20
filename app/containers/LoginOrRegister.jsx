@@ -18,6 +18,9 @@ class LoginOrRegister extends Component {
   constructor(props) {
     super(props);
     this.handleOnSubmit = this.handleOnSubmit.bind(this);
+    this.state = {
+      userType: 'client',
+    }
   }
 
   handleOnSubmit(event) {
@@ -30,8 +33,16 @@ class LoginOrRegister extends Component {
     if (isLogin) {
       manualLogin({ email, password });
     } else {
-      signUp({ email, password });
+      const name = ReactDOM.findDOMNode(this.refs.name).value;
+      const userType = this.state.userType;
+      signUp({ email, password, name, userType });
     }
+  }
+
+  handleOnUserTypeChange = e => {
+    this.setState({
+      userType: e.target.value,
+    })
   }
 
   renderHeader() {
@@ -79,16 +90,28 @@ class LoginOrRegister extends Component {
           <img className={cx('loading')} alt="loading" src={hourGlassSvg} />
           <div className={cx('email-container')}>
             <form onSubmit={this.handleOnSubmit}>
+              {!isLogin && (
+                <div className={cx('type-input')}>
+                  <input
+                    className={cx('input')}
+                    type="text"
+                    ref="name"
+                    placeholder="name"
+                  />
+                  <input type="radio" name="type" value="client" onChange={this.handleOnUserTypeChange} /><span>Client</span>
+                  <input type="radio" name="type" value="restaurant" onChange={this.handleOnUserTypeChange} /><span>Restaurant</span>
+                </div>
+              )}
               <input
                 className={cx('input')}
                 type="email"
                 ref="email"
-               placeholder="email"
+                placeholder="email"
               />
               <input
                 className={cx('input')}
                 type="password"
-               ref="password"
+                ref="password"
                 placeholder="password"
               />
               <div className={cx('hint')}>
@@ -104,12 +127,6 @@ class LoginOrRegister extends Component {
                 type="submit"
                 value={isLogin ? 'Login' : 'Register'} />
             </form>
-          </div>
-          <div className={cx('google-container')}>
-            <h1 className={cx('heading')}>Google Login Demo</h1>
-            <a
-              className={cx('button')}
-              href="/auth/google">Login with Google</a>
           </div>
         </div>
       </div>
@@ -136,4 +153,3 @@ function mapStateToProps({user}) {
 // It does not modify the component class passed to it
 // Instead, it returns a new, connected component class, for you to use.
 export default connect(mapStateToProps, { manualLogin, signUp, toggleLoginMode })(LoginOrRegister);
-
