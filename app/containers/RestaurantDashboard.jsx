@@ -181,7 +181,12 @@ class RestaurantDashboard extends Component {
           <h1>Week Sales</h1>
           <div className={cx('stats-container')}>
             {earnings.map(earning => (
-              <DishStatCard img={earning.total > 10 ? billsImg : billImg } period={moment(earning.date).format('ddd D, MMM YYYY')} quantity={<NumberFormat value={earning.total} displayType={'text'} thousandSeparator={true} prefix={'$'} />} quantityColor="#0F9D58"/>
+              <DishStatCard
+                img={earning.total > 10 ? billsImg : billImg }
+                period={moment(earning.date).format('ddd D, MMM YYYY')}
+                quantity={<NumberFormat value={earning.total} displayType={'text'} thousandSeparator={true} prefix={'$'} decimalPrecision={2} />}
+                quantityColor="#0F9D58"
+              />
             ))}
           </div>
         </div>

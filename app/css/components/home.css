@@ -60,3 +60,37 @@
   padding: 30px;
   margin-left: 20px;
 }
+
+.restaurant-menu {
+  background-color: #F0F0F0;
+  padding: 15px;
+  margin-bottom: 20px;
+}
+
+.menu-dish {
+  background-color: #FBFBFB;
+  padding: 10px;
+}
+
+.cart {
+  background-color: #F0F0F0;
+  padding: 15px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 400px;
+  height: 100%;
+  margin-left: 40px;
+}
+
+.reduce-quantity-btn {
+  color: #ed193a;
+  font-size: 40px;
+  padding: 0;
+  background: transparent;
+  line-height: 0;
+  border: 0;
+  padding-bottom: 15px;
+  cursor: pointer;
+  outline: none;
+}
